@@ -1,2 +1,2 @@
-# gitbook-studying
-同步gitbook
+# Linux实战技能100讲
+
