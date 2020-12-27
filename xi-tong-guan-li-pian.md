@@ -87,3 +87,9 @@ centOS 7使用了一致性网络设备命名，以上都不匹配则使用eth0
 
                         route add -host 10.0.0.1 gw 10.211.55.1
 
+![](.gitbook/assets/image%20%2815%29.png)
+
+![](.gitbook/assets/image.png)
+
+![](.gitbook/assets/image%20%286%29.png)
+
