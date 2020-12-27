@@ -43,7 +43,7 @@ centOS 7使用了一致性网络设备命名，以上都不匹配则使用eth0
 2. 更新grub：grub2-mkconfig -o /boot/grub2/grub.cfg 
 3. reboot重启
 
-![](.gitbook/assets/image%20%289%29.png)
+![](.gitbook/assets/image%20%289%29%20%281%29.png)
 
 规则：
 

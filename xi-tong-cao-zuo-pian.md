@@ -14,7 +14,7 @@
 
 man根据章节来获取内容，命令为 man 7 ls（q退出）；帮助手册章节总共为9章，不同的命令放在不同章节，如果出现命令重名，则可以按照章节区分出来，默认按照章节顺序搜索，某个章节搜索到则返回结果。-a参数可以搜索所有章节
 
-![](.gitbook/assets/image%20%2812%29.png)
+![](.gitbook/assets/image%20%2812%29%20%281%29.png)
 
 ### help命令
 
@@ -115,8 +115,6 @@ cp -r ./dir1/ ./dir2/与cp -r ./dir1 ./dir2/不一样，前者是复制dir1的�
 
 cat：文本内容显示到终端
 
-more ：
-
 head：查看文件开头
 
             默认显示10行，可以指定行数 head -n
@@ -139,7 +137,7 @@ more：按页查看文件
 
          空格键向下翻页；b键向上翻页；q退出
 
-less：在more的基础上，增加查询功能
+less：在more的基础上，增加查询功能 --翻页、搜索、行号
 
 * -N 显示每行的行号 
 * 空格键 滚动一页 
@@ -195,7 +193,7 @@ gzip速度更快，bzip体积更小
 
 4）解压命令总结
 
-1、\*.tar 用 tar –xvf 解压
+1、\*.tar 用 tar –xvf 解包
 
 2、\*.gz 用 gzip -d或者gunzip 解压
 
@@ -212,6 +210,16 @@ gzip速度更快，bzip体积更小
 8、\*.rar 用 unrar x 解压
 
 9、\*.zip 用 unzip 解压
+
+| 后缀 | 压缩/打包 | 解压/解包 |
+| :--- | :--- | :--- |
+| .tar | tar -cvf a.tgz aa\*.txt | tar -xvf |
+| .gz | gzip | gunzip |
+| .tgz\(.tar.gz\) | tar -zxcf  | tar -zcvf |
+| .bz2 | bzip | bunzip |
+| tbz2\(.tar.bzip2\) | tar -jcvf | tar -jxvf |
+| .zip | zip | unzip |
+| .rar | rar | unrar |
 
 ## vi vim 文本编辑器
 
@@ -279,7 +287,7 @@ b.正常模式切换到命令模式 ：冒号
 
 保存 ：w
 
-临时执行shell命令：  ！后面跟命令，执行完以后Enter键返回（例如:!config） 
+临时执行shell命令：  ！后面跟命令，执行完以后Enter键返回（例如:!ifconfig） 
 
 查找和替换：
 
@@ -313,7 +321,7 @@ b.正常模式切换到命令模式 ：冒号
 * V :  行可视模式（以行为单位）
 * ctrl + v ：块可视模式（使用最多）
 
-插入文本时，填写完插入的文本，需要双击ESC
+插入文本时，先选中块，然后 Shift + i，进入insert模式，填写完插入的文本，双击ESC
 
 ![](.gitbook/assets/image%20%288%29.png)
 
