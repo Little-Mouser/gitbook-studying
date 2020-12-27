@@ -87,9 +87,69 @@ centOS 7使用了一致性网络设备命名，以上都不匹配则使用eth0
 
                         route add -host 10.0.0.1 gw 10.211.55.1
 
+![](.gitbook/assets/image%20%2820%29.png)
+
+![](.gitbook/assets/image%20%286%29.png)
+
+![](.gitbook/assets/image%20%2817%29.png)
+
+## 进程管理
+
+### 进程的概念
+
 ![](.gitbook/assets/image%20%2815%29.png)
+
+### 查看进程状态
+
+#### ps命令
+
+ps不带参数，只显示当前终端运行的进程
+
+ps -eLf 可以查看所有进程，以及对应的线程数
+
+![](.gitbook/assets/image%20%2816%29.png)
+
+#### pstree：查看进程树结构
+
+#### top命令：
+
+按数字1，可以统计每个逻辑cpu占用情况，再按1则返回默认
+
+![](.gitbook/assets/image%20%2819%29.png)
+
+内容解读：[https://www.cnblogs.com/peida/archive/2012/12/24/2831353.html](https://www.cnblogs.com/peida/archive/2012/12/24/2831353.html)
+
+load average解读：[https://www.ruanyifeng.com/blog/2011/07/linux\_load\_average\_explained.html](https://www.ruanyifeng.com/blog/2011/07/linux_load_average_explained.html)
+
+top -p查看特定进程实时状态
+
+#### nice、renice控制进程优先级
+
+nice可以控制NI，NI会影响PR（决定优先级），但是PR除了人为控制部分，还有内核自动调节的部分
+
+  **Nice值**的**范围**是-20~+19，拥有**Nice值**越大的进程的实际优先级越小，默认的**Nice值**是0
+
+启动时设置优先级：nice -n 10 ./a.sh
+
+已启动的进程改变优先级： renice -n 15 pid
+
+#### jobs、bg、fg任务前后台切换
+
+1、启动任务时，让一个任务在后台运行 nohup 命令 &
+
+2、已经启动的任务，运行在前台，不想要直接关掉，可以暂时调整为stop状态，放在后台挂起。ctrl +   z
+
+3、jobs可以查看当前shell所有后台任务编号。如果一个后台任务（无论running还是stop），想要在后台run起来，则bg jobid；该后台任务如果想调到前台来执行，则fg jobid
+
+#### kill 使用信号方式进行进程通信
+
+kill -l查看所有信号
 
 ![](.gitbook/assets/image.png)
 
-![](.gitbook/assets/image%20%286%29.png)
+ctrl-c 发送 SIGINT 信号（kill -2）给前台进程组中的所有进程。常用于终止正在运行的程序
+
+kill -9 强行杀死
+
+
 
