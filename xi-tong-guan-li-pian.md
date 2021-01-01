@@ -87,6 +87,58 @@ centOS 7使用了一致性网络设备命名，以上都不匹配则使用eth0
 
                         route add -host 10.0.0.1 gw 10.211.55.1
 
+####  iproute2与net-tools对比
+
+               ![](https://app.yinxiang.com/shard/s45/res/ae6366b0-6ac2-4a76-aa76-0fd800d155aa.png)  
+    
+
+#### 网络故障排除命令（网络连通性-&gt;端口连通性-&gt;抓包）
+
+* ping ：查看网络连通性以及丢包概率
+* traceroute：  跟踪 Internet 协议（IP）数据包传送到目标地址时经过的路径，以及每个阶段的耗费时间、连通性
+
+             [https://blog.csdn.net/llq\_200/article/details/81034345](https://blog.csdn.net/llq_200/article/details/81034345)
+
+* mtr：更为全面的丢包诊断工具 [https://cloud.tencent.com/developer/article/1332118](https://cloud.tencent.com/developer/article/1332118)
+* nslookup
+*     ![](https://app.yinxiang.com/shard/s45/res/af7e4ac3-1a43-45b2-a84a-a3541b57de40.png)
+* telnet：退出方式 ctrl + \] ；进入telnet后，输入quit
+* tcpdump：抓包工具。tcpdump -i any -n host 10.0.0.1 and port 80 -w /tmp/dump\(抓取任意网卡上，与10.0.0.1主机联通且端口为80的包，并打印到对应文件中\)
+
+             [https://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html](https://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html)
+
+* netstat -lnpt ：查看端口监听情况 \(l:listen n:不打印域名 p：process t：tcp）
+
+####     linux服务管理
+
+* systemV ：  [https://blog.csdn.net/qq\_27754983/article/details/74520077](https://blog.csdn.net/qq_27754983/article/details/74520077)
+* systemD：  [http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-part-two.html](http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-part-two.html)
+
+            ![](https://app.yinxiang.com/shard/s45/res/a34c7a21-bb25-4d7c-bead-eeb29c5b7d8a.png)    9、网络配置文件（只有修改了配置文件，重启网卡或者机器，修改项才能永久生效）        1）网络管理程序 sysV和systemd
+
+* * service network start \| stop \| restart
+  * chkconfig -list network
+  * chkconfig --level 2345 network off \| on 打开/禁用
+  * systemctl list-units-files NetworkManage.service
+  * systemctl start \| stop \| restart NetworkManage.service
+  * systemctl enable \| disable NetworkManager --一般禁用掉systemd的管理方式，避免冲突
+
+        2）网络配置文件更改
+
+* * 修改配置文件（/etc/sysconfig/network-scripts）： [https://blog.csdn.net/chinaltx/article/details/86497165\#2.1%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%B9](https://blog.csdn.net/chinaltx/article/details/86497165#2.1%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%B9)
+
+                    ![](https://app.yinxiang.com/shard/s45/res/ff23a22d-f05b-4c0f-a544-5ff4ab35fef4.png)   ![](https://app.yinxiang.com/shard/s45/res/70b4a2e3-28a1-48eb-be46-9b4dadf1af43.png)
+
+* * service network restart（重启网络服务生效）
+
+#### 修改主机名
+
+* hostname 可以查看当前主机名
+* hostname [liuhao.com](http://liuhao.com/) 临时修改主机名
+* hostnamectl  set-hostname [liuhao.com](http://liuhao.com/) 永久修改主机名 --注意需要去/etc/hosts加入127.0.0.1映射到主机名的配置，否则机器启动有问题
+
+![](https://app.yinxiang.com/shard/s45/res/a6a90051-76e8-44e8-8cd2-f0cb3b1b829f.png)
+
 ![](.gitbook/assets/image%20%2820%29.png)
 
 ![](.gitbook/assets/image%20%286%29.png)
