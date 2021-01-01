@@ -139,11 +139,62 @@ centOS 7使用了一致性网络设备命名，以上都不匹配则使用eth0
 
 ![](https://app.yinxiang.com/shard/s45/res/a6a90051-76e8-44e8-8cd2-f0cb3b1b829f.png)
 
-![](.gitbook/assets/image%20%2820%29.png)
+## 软件包管理
 
-![](.gitbook/assets/image%20%286%29.png)
+### 包管理器
 
-![](.gitbook/assets/image%20%2817%29.png)
+### ![](https://app.yinxiang.com/shard/s45/res/94c9d769-4b37-450f-8f2f-c88e2e3c153c.png)
+
+### rpm包格式 
+
+  ![](https://app.yinxiang.com/shard/s45/res/c2a700c9-42f5-4f72-b90e-77de00103893.png)
+
+### rpm命令    
+
+ [https://blog.51cto.com/ch666/1752103](https://blog.51cto.com/ch666/1752103)    使用rpm命令管理包，需要手动处理依赖关系，常见参数 rpm -ivh; rpm -e; rpm -qa四、直接编译源码安装
+
+*  yum install gcc gcc-c++  安装编译器
+* wget [https://openresty.org/download/openresty-1.15.8.1.tar.gz](https://openresty.org/download/openresty-1.15.8.1.tar.gz)
+* tar -zxf openresty-1.15.8.1.tar.gz
+* cd openresty-1.15.8.1/
+* ./configure --prefix=/usr/local/openresty
+* make
+* make install
+
+### yum命令rpm的劣势：
+
+1、软件包依赖关系
+
+2、软件包来源不可靠
+
+### yum命令
+
+#### 更换yum源
+
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup  
+wget -O /etc/yum.repos.d/CentOS-Base.repo [https://mirrors.aliyun.com/repo/Centos-7.repo](https://mirrors.aliyun.com/repo/Centos-7.repo)yum makecache
+
+#### yum常用命令
+
+* . 列出所有可更新的软件清单命令：yum check-update
+* 2. 更新所有软件命令：yum update
+* 3. 仅安装指定的软件命令：yum install &lt;package\_name&gt;  如果不指定版本，默认安装最新版本
+* 4. 仅更新指定的软件命令：yum update &lt;package\_name&gt;
+* 5. 列出所有可安裝的软件清单命令：yum list（yum list installed 列出已安装；yum list updates 列出已更新）
+* 6. 删除软件包命令：yum remove &lt;package\_name&gt;
+* 7. 查找软件包命令：yum search &lt;keyword&gt;
+
+###  升级内核
+
+#### yum方式：           
+
+ uname -r  
+  yum install kernel-3.10.0  
+  yum update kernel-3.10.0
+
+#### 源代码编译方式：太复杂，需要看视频跟着
+
+###  grub配置文件介绍：暂时不想学
 
 ## 进程管理
 
