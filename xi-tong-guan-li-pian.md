@@ -521,3 +521,7 @@ mount /dev/sdb1 /mnt/sdb1
 
 ![](.gitbook/assets/image%20%2842%29.png)
 
+### 磁盘限额
+
+![](.gitbook/assets/image%20%2843%29.png)
+
