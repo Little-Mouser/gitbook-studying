@@ -344,11 +344,11 @@ MAC（强制访问控制）：SELinux工具实现。以进程为主体，进程�
 
 free查看的时候数字存在四舍五入的情况
 
-![](.gitbook/assets/image%20%2829%29.png)
+![](.gitbook/assets/image%20%2830%29.png)
 
 ### 认识块设备
 
-![](.gitbook/assets/image%20%2832%29.png)
+![](.gitbook/assets/image%20%2836%29.png)
 
 /dev/sda : 所属组8, 0     
 
@@ -366,11 +366,11 @@ free查看的时候数字存在四舍五入的情况
 
 #### fdisk -h 查看磁盘与分区情况
 
-![](.gitbook/assets/image%20%2830%29.png)
+![](.gitbook/assets/image%20%2831%29.png)
 
 #### parted -l 查看磁盘与分区情况
 
-![](.gitbook/assets/image%20%2828%29.png)
+![](.gitbook/assets/image%20%2829%29.png)
 
 #### du 查看分区使用率以及挂载目录（一般查看文件夹大小，一步步排查）
 
@@ -447,11 +447,11 @@ ext4系统说明
 
 #### 判断某个文件是否配置了facl
 
-![](.gitbook/assets/image%20%2833%29.png)
+![](.gitbook/assets/image%20%2837%29.png)
 
 #### getfacl 查看文件的facl（权限优先级应该按展示的顺序来，个人不确定）
 
-![](.gitbook/assets/image%20%2831%29.png)
+![](.gitbook/assets/image%20%2835%29.png)
 
 常见使用方式
 
@@ -475,9 +475,49 @@ setfacl  -m  mask::rw   /path/to/file   #设置mask权限
 setfacl  --set  u:uame:rwx  /path/to/file   #重置所有并添加一个条目
 ```
 
+### 磁盘分区挂载流程
 
+#### 添加磁盘
 
+virtualBox添加虚拟磁盘
 
+![](.gitbook/assets/image%20%2833%29.png)
 
+#### fdisk 磁盘路径 ，开始分区操作
 
+\#如果磁盘大于2T，要使用parted命令去分区
+
+分区过程中重要操作参数
+
+![](.gitbook/assets/image%20%2839%29.png)
+
+建立分区流程
+
+![](.gitbook/assets/image%20%2828%29.png)
+
+![](.gitbook/assets/image%20%2834%29.png)
+
+#### mkfs 格式化
+
+可以制作的文件系统
+
+![](.gitbook/assets/image%20%2832%29.png)
+
+![](.gitbook/assets/image%20%2841%29.png)
+
+#### mount 挂载
+
+mkdir -p /mnt/sdb1
+
+mount /dev/sdb1 /mnt/sdb1
+
+使用mount或者df命令都可以磁盘挂载是否成功
+
+![](.gitbook/assets/image%20%2838%29.png)
+
+要想永久挂载，需要修改分区文件/etc/fstab，手动添加挂载记录
+
+参考：[https://wiki.archlinux.org/index.php/Fstab\_\(简体中文\)](https://wiki.archlinux.org/index.php/Fstab_%28简体中文%29)
+
+![](.gitbook/assets/image%20%2842%29.png)
 
