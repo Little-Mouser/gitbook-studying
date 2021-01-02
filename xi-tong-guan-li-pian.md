@@ -348,7 +348,7 @@ free查看的时候数字存在四舍五入的情况
 
 ### 认识块设备
 
-![](.gitbook/assets/image%20%2831%29.png)
+![](.gitbook/assets/image%20%2832%29.png)
 
 /dev/sda : 所属组8, 0     
 
@@ -422,7 +422,7 @@ ext4系统说明
 * Group descriptor：记录该group的inode、block总数以及inode bitmap（位图）、block bitmap信息
 * inode bitmap：记录每一个inode是否被使用
 * block bitmap：记录每一个block是否被占用
-* inode table：inode表。存储每一个inode，inode包含除了文件名外所有文件描述符的内容以及到对应数据块的索引链接
+* inode table（index node）：inode表。存储每一个inode，inode包含除了文件名外所有文件描述符的内容以及到对应数据块的索引链接
 * data block：存储数据以及子文件的inode number和文件名
 
 2、查看磁盘利用率，直接查看superblock内容
@@ -431,7 +431,49 @@ ext4系统说明
 
 4、cat某个文件。从根目录出发（系统存储了根目录的inode number），找到inode number，inode table找到对应data block，data中取出下一级子目录的inode number，不断向下循环操作，直至找到对应文件data。
 
-5、inode不保存文件名，文件名只是文件的别名，多个文件可以使用同一个inode。比如创建的硬链接，硬链接文件名对应的inode就是源文件的inode。但是软链接会新建一个文件，并分配新的inode，文件data为源文件的路径，系统可以识别出软链接，根据路径去寻找源文件的data。
+5、inode不保存文件名，文件名只是文件的别名，多个文件可以使用同一个inode。比如创建的硬链接，硬链接文件名对应的inode就是源文件的inode，硬链接不能跨越分区，因为要指向同一个inode。但是软链接（符号链接，ln -s）会新建一个文件，并分配新的inode，文件data为源文件的路径，系统可以识别出软链接，根据路径去寻找源文件的data。对链接文件所有的权限操作都传递给源文件
+
+6、vim修改文件时，系统会创建一个新的副本文件（源文件保持不变，其他用户访问源内容），当vim完成，系统实际是新建了一个同名文件，文件的inode会变化
+
+7、rm命令删除文件时，只是断开inode到data block的链接，没有直接删除原数据（不管删除多大的文件，执行速度是一样的；如果误删除，是有办法可以恢复的）
+
+8、cp命令复制一个文件，新文件有自己的inode。mv在同一个文件系统操作时inode不变，跨文件系统inode会变化
+
+### facl 文件访问控制列表
+
+参考：[https://blog.51cto.com/mengzhaofu/1834280](https://blog.51cto.com/mengzhaofu/1834280)
+
+对于复杂权限设置，需要用到facl。比如对于同一个文件，user1有r权限，user2有w权限，user3有x权限，使用chmod、chown完成不了这个配置，但是facl可以给user、group细粒度配置权限。
+
+#### 判断某个文件是否配置了facl
+
+![](.gitbook/assets/image%20%2833%29.png)
+
+#### getfacl 查看文件的facl（权限优先级应该按展示的顺序来，个人不确定）
+
+![](.gitbook/assets/image%20%2831%29.png)
+
+常见使用方式
+
+```text
+setfacl  -m  u:uname:rwx  /path/to/file       #设置单一指定用户条目
+setfacl  -x   u:uname  /path/to/file      #删除单一指定用户条目
+setfacl  -m  g:gname:rwx  /path/to/file       #设置单一指定用户组条目
+setfacl  -x   g:gname:     /path/to/file   #删除单一指定用户组条目
+setfacl  -m  u:uname:rwx,g:gname:rx   /path/to/file   #同时设置多条目
+setfacl  -x   g:gname:,u:uname   /path/to/file     #同时删除指定多条目
+setfacl  -k   /path/to/file               #清除所有默认(default)facl条目
+setfacl  -b   /path/to/file               #删除所有facl存在设置
+setfacl  -Rm  g:gname:rwX  /path/to/dir_file #对目录有效递归设置，普通文件不会有x权限
+seffacl  -M  file.acl  /path/to/file     #将指定格式文本文件条目设置到对应文件
+file.acl文件格式： u:uname:rw  等
+setfacl  -X   file.acl  /path/to/file    将删除格式文件中匹配的条目
+getfacl  /path/to/file1 | setfacl  --set-file=-  /path/to/file2 
+#将file1权限复制给file2
+setfacl  -m  mask::rw   /path/to/file   #设置mask权限
+
+setfacl  --set  u:uame:rwx  /path/to/file   #重置所有并添加一个条目
+```
 
 
 
