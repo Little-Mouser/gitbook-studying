@@ -334,5 +334,108 @@ DAC（自主访问控制）：以用户为主体，手动配置用户拥有哪�
 
 MAC（强制访问控制）：SELinux工具实现。以进程为主体，进程带有一个标签，文件带有一个标签，两者标签必须一致进程才能访问文件，就算root用户执行的进程，也会受到控制。由于控制过于严厉，配置过于复杂，生产环境一般关闭
 
+## 存储管理
+
+### 内存查看
+
+#### free
+
+物理内存使用完，会使用swap，但性能变差。如果内存满了，会随机杀掉占用内存较大的进程。因此内存爆满导致进程挂掉时可能的
+
+free查看的时候数字存在四舍五入的情况
+
+![](.gitbook/assets/image%20%2829%29.png)
+
+### 认识块设备
+
+![](.gitbook/assets/image%20%2831%29.png)
+
+/dev/sda : 所属组8, 0     
+
+/dev/sda1 : 所属组8, 1
+
+/dev/sda2 : 所属组8, 2
+
+主设备号\(所属组第一个数字\)：代表着某一类型的设备，比如SCSI硬盘、虚拟硬盘、USB等等 
+
+次设备号（所属组第二个数字）：操作系统分配的整数，与主设备号一起（major,minor），组成了该设备在操作系统当中唯一的ID
+
+上述表示sda磁盘分为三个分区
+
+### 查看磁盘
+
+#### fdisk -h 查看磁盘与分区情况
+
+![](.gitbook/assets/image%20%2830%29.png)
+
+#### parted -l 查看磁盘与分区情况
+
+![](.gitbook/assets/image%20%2828%29.png)
+
+#### du 查看分区使用率以及挂载目录（一般查看文件夹大小，一步步排查）
+
+直接du，递归显示当前目录下所有文件夹及子文件夹的大小
+
+可以带多个文件夹
+
+常用参数：
+
+-a : 显示目录以及文件夹
+
+-h : 友好显示
+
+-s: 只显示指定目录，不显示子目录或文件
+
+--max-depth=N : 指定遍历深度
+
+常见用法：
+
+du -ah --max-depth=5
+
+du -sm ./\* \| sort -rn \| head -5
+
+#### ll 查看具体文件大小
+
+如果文件中有空洞内容，实际空洞内容不占用磁盘空间，du命令不会计算空洞内容，但是ll会计算
+
+### 文件系统
+
+常见文件系统：
+
+ext4（centos6） xfs（centos7） ntfs（windows）
+
+ext4系统说明
+
+参考：
+
+[https://www.jianshu.com/p/eb8b2a679537](https://www.jianshu.com/p/eb8b2a679537)
+
+[https://monkeysayhi.github.io/2018/03/10/Linux文件系统：inode&block，文件&目录，硬链&软链/](https://monkeysayhi.github.io/2018/03/10/Linux文件系统：inode&block，文件&目录，硬链&软链/)
+
+个人总结：
+
+1、ext4结构
+
+每个分区分为多个block group，每个group包含以下部分
+
+* superblock：记录分区综合信息，group使用情况inode数量以及block数量。每个group的super block是一样的，互为备份
+* Group descriptor：记录该group的inode、block总数以及inode bitmap（位图）、block bitmap信息
+* inode bitmap：记录每一个inode是否被使用
+* block bitmap：记录每一个block是否被占用
+* inode table：inode表。存储每一个inode，inode包含除了文件名外所有文件描述符的内容以及到对应数据块的索引链接
+* data block：存储数据以及子文件的inode number和文件名
+
+2、查看磁盘利用率，直接查看superblock内容
+
+3、创建文件时，先查看superblock，找到利用率较小group，根据group中的bitmap分配inode和block，创建inode，存储到inode table，存储data到data block，并建立inode到block链接
+
+4、cat某个文件。从根目录出发（系统存储了根目录的inode number），找到inode number，inode table找到对应data block，data中取出下一级子目录的inode number，不断向下循环操作，直至找到对应文件data。
+
+5、inode不保存文件名，文件名只是文件的别名，多个文件可以使用同一个inode。比如创建的硬链接，硬链接文件名对应的inode就是源文件的inode。但是软链接会新建一个文件，并分配新的inode，文件data为源文件的路径，系统可以识别出软链接，根据路径去寻找源文件的data。
+
+
+
+
+
 
 
