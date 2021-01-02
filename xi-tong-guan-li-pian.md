@@ -525,3 +525,15 @@ mount /dev/sdb1 /mnt/sdb1
 
 ![](.gitbook/assets/image%20%2843%29.png)
 
+建立swap
+
+添加新磁盘，扩容swap
+
+1、新磁盘建立一个分区
+
+2、mkswap /dev/sdb1  格式化
+
+3、swapon /dev/sdb1 启用swap，会扩充原swap大小
+
+      swapoff /dev/sdb1 关闭该swap
+
