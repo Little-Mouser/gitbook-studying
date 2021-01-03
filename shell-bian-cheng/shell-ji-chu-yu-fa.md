@@ -37,15 +37,73 @@ STDOUT是标准输出，默认将输出结果输出至终端；
 
 STDERR是标准错误，默认将输出结果输出至终端。
 
-重定向语法
+### 重定向语法
 
 参考：[https://www.runoob.com/linux/linux-shell-io-redirections.html](https://www.runoob.com/linux/linux-shell-io-redirections.html)
 
-输出重定向：
+#### 输出重定向：
 
-模式1：m&gt;  （m可以为0，1，2，&）
+模式1：覆盖
 
-echo 123 2&gt;   
-  
+echo 123 &gt; tt.txt
 
+echo 123 2&gt; tt.txt
+
+echo 123 &&gt; tt.txt
+
+模式2: 追加
+
+echo 123 &gt;&gt; tt.txt
+
+echo 123 2&gt;&gt; tt.txt
+
+echo 123 &&gt;&gt; tt.txt
+
+模式3：stdout和stderr之间重定向
+
+echo 123 &gt; tt.txt  2&gt;&1  表示stdout和stderr都重定向到tt.txt
+
+模式4：重定向到/dev/null，不留日志
+
+echo 123 &gt; /dev/null
+
+#### 输入重定向：
+
+模式1 ： 
+
+cat &lt; tt.txt
+
+模式2：Here Document。一般用于在shell脚本中创建一个文件并赋予内容。
+
+它的基本的形式如下：
+
+```text
+command << delimiter
+    document
+delimiter
+```
+
+它的作用是将两个 delimiter 之间的内容\(document\) 作为输入传递给 command
+
+例子：
+
+```text
+cat > tt.txt << EOF
+i am $user
+EOF
+```
+
+### 　几种快速清空文件内容的方法：
+
+　　$ : &gt; filename \#其中的 : 是一个占位符, 不产生任何输出.
+
+　　$ &gt; filename
+
+　　$ echo “” &gt; filename
+
+　　$ echo /dev/null &gt; filename
+
+　　$ echo &gt; filename
+
+　　$ cat /dev/null &gt; filename
 
