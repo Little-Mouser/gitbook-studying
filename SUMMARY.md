@@ -6,3 +6,7 @@
 * [系统管理篇](xi-tong-guan-li-pian.md)
 * [Shell](shell.md)
 
+## Shell编程
+
+* [Shell基础语法](shell-bian-cheng/shell-ji-chu-yu-fa.md)
+
