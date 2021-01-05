@@ -75,7 +75,7 @@ cat &lt; tt.txt
 
 模式2：Here Document。一般用于在shell脚本中创建一个文件并赋予内容。
 
-它的基本的形式如下：
+它的基本的形式如下： 
 
 ```text
 command << delimiter
